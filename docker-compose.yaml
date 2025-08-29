@@ -1,0 +1,66 @@
+version: '3.8'  # Это версия докера?
+services: # В сервисах мы пишем сервисы которые будем разворачивать? например zookeeper kafka spark
+  zookeeper:
+    image: bitnami/zookeeper:3.9.2  # это версия которую подтянет докер?
+    container_name: zookeeper # это название контейнера в докере?
+    ports: # как работают порты и что это такое? 
+      - "2181:2181"
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+
+  
+  kafka:
+    image: bitnami/kafka:3.6.1
+    container_name: kafka
+    ports: 
+      - "9092:9092"
+    environment: # что такое environment ? и что за параметры мы задаем в нем?
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
+      - ALLOW_PLAINTEXT_LISTENER=yes
+    depends_on: # это зависимости?
+      - zookeeper
+
+  spark-master:
+    image: bitnami/spark:3.5.0
+    container_name: spark-master
+    environment: # опять же что тут происходит
+      - SPARK_MODE=master
+    ports: # почему именно такие порты?
+      - "7077:7077"
+      - "8080:8080"
+    volumes: # а это что? где у нас будут храниться файлы?
+      - ./app:/opt/spark-apps
+  
+  spark-worker-1:
+    image: bitnami/spark:3.5.0
+    container_name: spark-worker-1
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark-master:7077
+    depends_on:
+      - spark-master
+  
+  spark-worker-2:
+    image: bitnami/spark:3.5.0
+    container_name: spark-worker-2
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark-master:7077
+    depends_on:
+    - spark-master
+  
+  jupyter:
+    image: jupyter/pyspark-notebook:latest
+    container_name: jupyter
+    ports:
+      - "8888:8888" # на этом порте я смогу открыть браузер и работать?
+    volumes:
+      - ./notebooks:/home/jovyan/work # что тут ? что такое jovyan
+    environment:
+      - PYSPARK_SUBMIT_ARGS=--master spark://spark-master:7077 pyspark-shell # что тут происходит
+    depends_on:
+      - spark-master
+      - spark-worker-1
+      - spark-worker-2
