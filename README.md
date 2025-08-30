@@ -26,3 +26,32 @@
 ├── notebooks/               # Jupyter ноутбуки
 │   └── example.ipynb
 └── README.md                # Этот файл :)
+
+
+
+Преждем всего нужно создать топик куда кафка будет отправлять данные 
+$ docker exec -it kafka kafka-topics.sh --bootstrap-server localhost:9092 --create --topic csv-data
+
+1. Проверьте детали каждого топика
+bash# Информация о топике kafka
+docker exec -it kafka kafka-topics.sh --bootstrap-server localhost:9092 --describe --topic kafka
+
+# Информация о топике csv-data
+docker exec -it kafka kafka-topics.sh --bootstrap-server localhost:9092 --describe --topic csv-data
+
+# __consumer_offsets - системный топик, можно пропустить
+2. Проверьте количество сообщений в топиках
+bash# Проверьте offset для kafka топика
+docker exec -it kafka kafka-run-class.sh kafka.tools.GetOffsetShell --broker-list localhost:9092 --topic kafka
+
+# Проверьте offset для csv-data топика
+docker exec -it kafka kafka-run-class.sh kafka.tools.GetOffsetShell --broker-list localhost:9092 --topic csv-data
+
+3. Попробуйте прочитать топик csv-data
+bash# Скорее всего в csv-data есть данные
+docker exec -it kafka kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic csv-data --from-beginning --max-messages 10
+
+4. Или прочитайте топик kafka
+bash# Проверьте топик kafka
+docker exec -it kafka kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic kafka --from-beginning --max-messages 5
+5. Если топики пустые, отправьте тестовое сообщение

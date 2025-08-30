@@ -52,15 +52,12 @@ services: # В сервисах мы пишем сервисы которые б
     - spark-master
   
   jupyter:
-    image: jupyter/pyspark-notebook:latest
+    build: ./  # <-- строим образ из Dockerfile
     container_name: jupyter
     ports:
-      - "8888:8888" # на этом порте я смогу открыть браузер и работать?
-    volumes:
-      - ./notebooks:/home/jovyan/work # что тут ? что такое jovyan
-    environment:
-      - PYSPARK_SUBMIT_ARGS=--master spark://spark-master:7077 pyspark-shell # что тут происходит
+      - "8888:8888"
     depends_on:
+      - kafka
       - spark-master
       - spark-worker-1
       - spark-worker-2
