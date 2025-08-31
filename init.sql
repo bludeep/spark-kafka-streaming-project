@@ -1,4 +1,3 @@
--- Этот файл создаст таблицу при первом запуске PostgreSQL
 CREATE TABLE real_estate_analytics (
     property_type VARCHAR(50),
     district VARCHAR(100), 
@@ -10,7 +9,6 @@ CREATE TABLE real_estate_analytics (
     PRIMARY KEY (property_type, district)
 );
 
--- Создать индексы для быстрых запросов
 CREATE INDEX idx_district ON real_estate_analytics(district);
 CREATE INDEX idx_type ON real_estate_analytics(property_type);
 CREATE INDEX idx_updated_at ON real_estate_analytics(updated_at);

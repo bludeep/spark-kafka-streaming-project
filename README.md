@@ -55,3 +55,11 @@ docker exec -it kafka kafka-console-consumer.sh --bootstrap-server localhost:909
 bash# Проверьте топик kafka
 docker exec -it kafka kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic kafka --from-beginning --max-messages 5
 5. Если топики пустые, отправьте тестовое сообщение
+
+
+export MSYS_NO_PATHCONV=1
+docker compose down
+docker volume rm sparkstreamingproject_postgres_data  
+docker compose up -d
+
+Проверяем таблицы  --      docker exec -it postgresql psql -U spark_user -d realestate -c "\dt"
