@@ -30,7 +30,7 @@
 
 
 Преждем всего нужно создать топик куда кафка будет отправлять данные 
-$ docker exec -it kafka kafka-topics.sh --bootstrap-server localhost:9092 --create --topic csv-data
+docker exec -it kafka kafka-topics.sh --bootstrap-server localhost:9092 --create --topic csv-data
 
 1. Проверьте детали каждого топика
 bash# Информация о топике kafka
