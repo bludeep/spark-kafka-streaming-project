@@ -1,9 +1,9 @@
-version: '3.8'  # Это версия докера?
-services: # В сервисах мы пишем сервисы которые будем разворачивать? например zookeeper kafka spark
+version: '3.8'
+services:
   zookeeper:
-    image: bitnami/zookeeper:3.9.2  # это версия которую подтянет докер?
-    container_name: zookeeper # это название контейнера в докере?
-    ports: # как работают порты и что это такое? 
+    image: bitnami/zookeeper:3.9.2
+    container_name: zookeeper
+    ports:
       - "2181:2181"
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
@@ -14,23 +14,23 @@ services: # В сервисах мы пишем сервисы которые б
     container_name: kafka
     ports: 
       - "9092:9092"
-    environment: # что такое environment ? и что за параметры мы задаем в нем?
+    environment:
       - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
       - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092
       - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
       - ALLOW_PLAINTEXT_LISTENER=yes
-    depends_on: # это зависимости?
+    depends_on:
       - zookeeper
 
   spark-master:
     image: bitnami/spark:3.5.0
     container_name: spark-master
-    environment: # опять же что тут происходит
+    environment:
       - SPARK_MODE=master
-    ports: # почему именно такие порты?
+    ports:
       - "7077:7077"
       - "8080:8080"
-    volumes: # а это что? где у нас будут храниться файлы?
+    volumes:
       - ./app:/opt/spark-apps
   
   spark-worker-1:
@@ -49,15 +49,34 @@ services: # В сервисах мы пишем сервисы которые б
       - SPARK_MODE=worker
       - SPARK_MASTER_URL=spark://spark-master:7077
     depends_on:
-    - spark-master
+      - spark-master
   
   jupyter:
-    build: ./  # <-- строим образ из Dockerfile
+    build: ./
     container_name: jupyter
     ports:
       - "8888:8888"
+    volumes:
+      - ./notebooks:/home/jovyan/work
     depends_on:
       - kafka
       - spark-master
-      - spark-worker-1
-      - spark-worker-2
+      - postgresql
+
+
+  postgresql:
+    image: postgres:15
+    container_name: postgresql
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: realestate
+      POSTGRES_USER: spark_user  
+      POSTGRES_PASSWORD: spark_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
