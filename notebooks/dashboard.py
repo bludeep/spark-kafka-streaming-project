@@ -76,7 +76,7 @@ st.subheader("📈 Визуализации")
 top_districts = filtered_df.groupby('district')['avg_price'].mean().sort_values(ascending=False).head(5)
 fig1 = px.bar(x=top_districts.values, y=top_districts.index, orientation='h',
               title="Топ-5 районов по цене", labels={'x': 'Цена (€)', 'y': 'Район'})
-st.plotly_chart(fig1, use_container_width=True)
+st.plotly_chart(fig1, width='stretch')
 
 # Объявления по типам недвижимости
 type_counts = filtered_df.groupby('property_type')['total_ads'].sum().sort_values(ascending=False)
@@ -98,7 +98,7 @@ if not type_counts.empty:
         margin=dict(t=50, b=50, l=50, r=50),
         showlegend=True
     )
-    st.plotly_chart(fig2, use_container_width=True)
+    st.plotly_chart(fig2, width='stretch')
 else:
     st.warning("Нет данных для отображения графика по типам недвижимости.")
 
@@ -107,7 +107,7 @@ st.markdown("---")
 st.subheader("📋 Данные")
 st.dataframe(
     filtered_df[['district', 'property_type', 'avg_price', 'total_ads', 'avg_price_per_sqm']],
-    use_container_width=True,
+    width='stretch',
     column_config={
         'district': 'Район',
         'property_type': 'Тип недвижимости',

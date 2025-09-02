@@ -1,14 +1,13 @@
 version: '3.8'
 services:
   zookeeper:
-    image: bitnami/zookeeper:3.9.2
+    image: bitnamilegacy/zookeeper:3.9
     container_name: zookeeper
     ports:
       - "2181:2181"
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
 
-  
   kafka:
     image: bitnami/kafka:3.6.1
     container_name: kafka
@@ -32,6 +31,7 @@ services:
       - "8080:8080"
     volumes:
       - ./app:/opt/spark-apps
+      - spark_checkpoint:/checkpoint
   
   spark-worker-1:
     image: bitnami/spark:3.5.0
@@ -41,6 +41,8 @@ services:
       - SPARK_MASTER_URL=spark://spark-master:7077
     depends_on:
       - spark-master
+    volumes:
+      - spark_checkpoint:/checkpoint
   
   spark-worker-2:
     image: bitnami/spark:3.5.0
@@ -50,20 +52,22 @@ services:
       - SPARK_MASTER_URL=spark://spark-master:7077
     depends_on:
       - spark-master
-  
+    volumes:
+      - spark_checkpoint:/checkpoint
+
   jupyter:
-    build: ./
+    build: ./ 
     container_name: jupyter
     ports:
       - "8888:8888"
       - "8501:8501"
     volumes:
       - ./notebooks:/home/jovyan/work
+      - spark_checkpoint:/checkpoint
     depends_on:
       - kafka
       - spark-master
       - postgresql
-
 
   postgresql:
     image: postgres:15
@@ -75,9 +79,8 @@ services:
       POSTGRES_USER: spark_user  
       POSTGRES_PASSWORD: spark_password
     volumes:
-      - postgres_data:/var/lib/postgresql/data
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     restart: unless-stopped
 
 volumes:
-  postgres_data:
+  spark_checkpoint:
