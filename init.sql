@@ -1,4 +1,4 @@
-CREATE TABLE real_estate_analytics (
+CREATE TABLE IF NOT EXISTS real_estate_analytics (
     property_type VARCHAR(50),
     district VARCHAR(100), 
     avg_price DECIMAL(12,2),
@@ -9,6 +9,6 @@ CREATE TABLE real_estate_analytics (
     PRIMARY KEY (property_type, district)
 );
 
-CREATE INDEX idx_district ON real_estate_analytics(district);
-CREATE INDEX idx_type ON real_estate_analytics(property_type);
-CREATE INDEX idx_updated_at ON real_estate_analytics(updated_at);
+CREATE INDEX IF NOT EXISTS idx_district ON real_estate_analytics(district);
+CREATE INDEX IF NOT EXISTS idx_type ON real_estate_analytics(property_type);
+CREATE INDEX IF NOT EXISTS idx_updated_at ON real_estate_analytics(updated_at);
