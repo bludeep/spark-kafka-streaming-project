@@ -118,5 +118,5 @@ st.dataframe(
 )
 
 # Автообновление
-time.sleep(10)
+time.sleep(15)
 st.rerun()
