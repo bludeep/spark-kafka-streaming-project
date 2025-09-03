@@ -93,7 +93,7 @@ SPARK KAFKA-STREAMING/
      ```
    - Топик `csv-data` создается автоматически при первой отправке (если не существует).
    - **Проверка**: `docker exec -it kafka kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic csv-data --from-beginning --max-messages 10` — выводит JSON-записи.
-![Kafka Producer](screenshots\kafka-producer-ezgif.com-video-to-gif-converter.gif)
+![Kafka Producer Demo](screenshots/kafka-producer.gif)
 
 
 5. **Запустите Spark Streaming**:
@@ -105,7 +105,7 @@ SPARK KAFKA-STREAMING/
      ```
      Увидите агрегации (district, property_type, avg_price, total_ads, avg_price_per_sqm).
 
-![Spark Streaming](screenshots\spark_stream-ezgif.com-video-to-gif-converter.gif)
+![Spark Streaming Demo](screenshots/spark-streaming.gif)
 
 
 6. **Запустите дашборд**:
@@ -121,7 +121,7 @@ SPARK KAFKA-STREAMING/
      Обновление дашборда: 2025-09-02 16:58:00
      ```
      После запуска `stream.ipynb` логи покажут `Загружено X строк из БД`.
-![Streamlit Dashboard](screenshots\dashboard-ezgif.com-video-to-gif-converter.gif)
+![Dashboard Demo](screenshots/dashboard.gif)
 
 
 7. **Остановка и очистка**:
