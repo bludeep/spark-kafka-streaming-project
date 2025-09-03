@@ -22,23 +22,18 @@
 
 ## Структура проекта
 
-SPARK KAFKA-STREAMING/
-│
+SPARK-KAFKA-STREAMING/
 ├── app/
 │   └── (папка приложения)
-│
 ├── notebooks/
-│   ├── checkpoint/
-│   │   └── (чекпоинты Spark)
-│   │
 │   ├── dashboard.py
 │   ├── kafka-producer.ipynb
 │   ├── portugal_listings.csv
 │   └── stream.ipynb
-│
+├── checkpoint/
+│   └── (чекпоинты Spark)
 ├── screenshots/
 │   └── (скриншоты и видео)
-│
 ├── docker-compose.yaml
 ├── Dockerfile
 ├── init.sql
