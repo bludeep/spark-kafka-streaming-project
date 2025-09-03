@@ -23,21 +23,18 @@
 ## Структура проекта
 
 SPARK-KAFKA-STREAMING/
-├── app/
-│   └── (папка приложения)
-├── notebooks/
-│   ├── dashboard.py
-│   ├── kafka-producer.ipynb
-│   ├── portugal_listings.csv
-│   └── stream.ipynb
-├── checkpoint/
-│   └── (чекпоинты Spark)
-├── screenshots/
-│   └── (скриншоты и видео)
-├── docker-compose.yaml
-├── Dockerfile
-├── init.sql
-└── README.md
+├── app/                        # Основное приложение
+├── notebooks/                  # Jupyter notebooks и скрипты
+│   ├── dashboard.py           # Dashboard приложение
+│   ├── kafka-producer.ipynb   # Kafka producer
+│   ├── portugal_listings.csv  # Набор данных
+│   └── stream.ipynb          # Streaming обработка
+├── checkpoint/                 # Spark checkpoints
+├── screenshots/               # Документация (скриншоты, видео)
+├── docker-compose.yaml        # Docker композиция
+├── Dockerfile                 # Docker образ
+├── init.sql                  # Инициализация базы данных
+└── README.md                 # Документация проекта
 
 ## Требования
 - Установлены **Docker** и **Docker Compose**.
