@@ -18,7 +18,7 @@
 - **PostgreSQL 15**: Хранилище агрегированных данных.
 - **Jupyter Notebook**: Среда для разработки.
 - **Streamlit**: Веб-дашборд.
-- **Библиотеки Python**: `pandas`, `kafka-python`, `pyspark`, `sqlalchemy`, `plotly`.
+- **Библиотеки Python**: `pandas`, `kafka-python`, `pyspark`, `sqlalchemy`, `plotly`, `streamlit`, `psycopg2-binary`.
 
 ## Структура проекта
 
@@ -60,7 +60,7 @@ SPARK KAFKA-STREAMING/
    ```
 
 
-3. **Запустите сервисы Docker**:
+2. **Запустите сервисы Docker**:
    ```bash
    docker compose up -d
    ```
@@ -69,7 +69,7 @@ SPARK KAFKA-STREAMING/
 
    ![alt text](screenshots/docker_ps.png)
 
-4. **Проверьте пустую БД**:
+3. **Проверьте пустую БД**:
    - Подключитесь к PostgreSQL:
      ```bash
      docker exec -it postgresql psql -U spark_user -d realestate -c "SELECT * FROM real_estate_analytics;"
@@ -80,7 +80,7 @@ SPARK KAFKA-STREAMING/
 
 
 
-5. **Запустите Kafka Producer**:
+4. **Запустите Kafka Producer**:
    - Откройте Jupyter: `http://localhost:8888`, перейдите в `notebooks/kafka-producer.ipynb`.
    - Выполните код в первой ячейке.
    - **Ожидаемый вывод**:
@@ -96,8 +96,7 @@ SPARK KAFKA-STREAMING/
 <video controls src="screenshots/kafka-producer.mp4" title="Title"></video>
 
 
-
-6. **Запустите Spark Streaming**:
+5. **Запустите Spark Streaming**:
    - В Jupyter: Откройте `notebooks/stream.ipynb` и выполните ячейку.
    - **Ожидаемый вывод**: Логи Spark в консоли Jupyter, Spark UI (`http://localhost:8080`) показывает активный стриминг.
    - **Проверка**: Через 30 секунд:
@@ -108,7 +107,7 @@ SPARK KAFKA-STREAMING/
 
 <video controls src="screenshots/spark_stream.mp4" title="Title"></video>
 
-7. **Запустите дашборд**:
+6. **Запустите дашборд**:
    - Команда:
      ```bash
      Открываем терминал в jupyter и вводим --   streamlit run dashboard.py --server.port 8501 --server.address 0.0.0.0
@@ -123,23 +122,9 @@ SPARK KAFKA-STREAMING/
      После запуска `stream.ipynb` логи покажут `Загружено X строк из БД`.
 <video controls src="screenshots/dashboard.mp4" title="Title"></video>
 
-
-8. **Остановка и очистка**:
+7. **Остановка и очистка**:
    - Остановить: `docker compose down`
    - Очистить БД: `docker volume rm sparkstreamingproject_postgres_data`
-
-## Демонстрация
-
-Для демонстрации создайте скринкаст (например, с OBS Studio):
-1. Запуск `docker compose up -d`.
-2. Очистка volume (`docker volume rm sparkstreamingproject_postgres_data`).
-3. Проверка пустой БД в psql.
-4. Запуск `notebooks/kafka-producer.ipynb` (показать создание топика и отправку данных).
-5. Запуск `notebooks/stream.ipynb` (показать Spark UI).
-6. Запуск дашборда (`http://localhost:8501`, показать обновление времени).
-7. Проверка заполненной таблицы в psql.
-8. Загрузите видео на YouTube/Vimeo и добавьте ссылку сюда.
-
 
 
 ## Соответствие ТЗ
